@@ -10,8 +10,6 @@ services:
     depends_on:
       pgdb:
         condition: service_healthy
-    env_file:
-      - .env
     environment:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DEBUG: ${DEBUG:-False}
@@ -31,14 +29,11 @@ services:
       POSTGRES_DB: ${DATABASE_NAME:-postgres}
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      # DATABASE_NAME: ${DATABASE_NAME:-postgres}
     container_name: pgdb
     ports:
       - 5432:5432
     volumes:
       - pgdbdata:/var/lib/postgresql/data/
-    env_file:
-      - .env
     networks:
       - app_network
     healthcheck:
