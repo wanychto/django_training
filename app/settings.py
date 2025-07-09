@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
     'django.contrib.postgres'
 ]
 
@@ -83,8 +82,8 @@ DATABASES = {
         'NAME': os.environ.get("DATABASE_NAME"),
         'USER': os.environ.get("DATABASE_USERNAME"),
         'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
-        'HOST': 'pgdb',
-        'PORT': 5432,
+        'HOST': os.environ.get("DATABASE_HOST", 'pgdb'),
+        'PORT': os.environ.get("DATABASE_PORT", 5432),
 
     }
 }
