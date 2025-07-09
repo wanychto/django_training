@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+myvenv/
+.env
+*.log
+*.pot
+bin/
+lib/
+
+**/.dockerignore
+**/.env
+
+.idea/

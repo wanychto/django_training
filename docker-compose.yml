@@ -1,0 +1,49 @@
+services:
+  django:
+    build: .
+    container_name: django
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - app_code:/usr/src/app 
+    ports:
+      - 8000:8000
+    depends_on:
+      pgdb:
+        condition: service_healthy
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DEBUG: ${DEBUG:-False}
+      DJANGO_LOGLEVEL: ${DJANGO_LOGLEVEL:-info}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost, 127.0.0.1}
+      DATABASE_NAME: ${DATABASE_NAME:-postgres}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+    networks:
+      - app_network
+
+  pgdb:
+    image: postgres:15.3
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-postgres}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    container_name: pgdb
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdbdata:/var/lib/postgresql/data/
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME} -d ${DATABASE_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  pgdbdata: 
+  app_code: 
+networks:
+  app_network:
+    driver: bridge
