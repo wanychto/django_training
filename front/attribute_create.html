@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание атрибута</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="container-fluid mt-5 px-0">
+        <div class="attribute-form">
+            <h1 class="atr-form-title">Создание атрибута</h1>
+            <form method="POST" action="#"></form>
+                <div class="form-group">
+                    <label class="form-label" for="name">Название</label>
+                    <input type="text" class="atr-form-control" id="name" name="name" placeholder="Например, Диаметр">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="unit">Единица измерения</label>
+                    <input type="text" class="atr-form-control" id="unit" name="unit" placeholder="мм, кг, л и т.п.">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="data_type">Тип данных</label>
+                    <select class="atr-form-control" id="data_type" name="data_type">
+                        <option value="string" selected>string</option>
+                        <option value="text">decimal</option>
+                        <option value="number">integer</option>
+                        <option value="boolean">boolean</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-save">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

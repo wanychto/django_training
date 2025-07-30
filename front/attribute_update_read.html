@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование атрибута</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+        <div class="upd-attribute-form">
+            <h1 class="atr-upd-form-title">Редактирование атрибута</h1>
+            
+            <form method="post">
+                <div class="form-group">
+                    <label class="form-label">Название</label>
+                    <input type="text" class="form-control " name="name" value="Диаметр">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Единица измерения</label>
+                    <input type="text" class="form-control " name="unit" value="мм">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Тип данных</label>
+                    <select class="form-control" name="data_type">
+                        <option selected>decimal</option>
+                        <option>string</option>
+                        <option>boolean</option>
+                        <option>integer</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Дата создания</label>
+                    <input type="text" class="read-only-field" id="created-at" value="2024-01-10">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Дата обновления</label>
+                    <input type="text" class="read-only-field" id="updated-at" value="2024-03-02">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Удален</label>
+                    <input type="text" class="read-only-field" id="attr-deleted" value="✖">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function enableEdit(element) {
+            const parent = element.parentElement;
+            const displayDiv = parent.querySelector('.form-value');
+            const inputField = parent.querySelector('.edit-mode');
+            
+            displayDiv.style.display = 'none';
+            inputField.style.display = 'block';
+            inputField.focus();
+            
+            if (inputField.tagName === 'SELECT') {
+                inputField.size = inputField.options.length > 5 ? 5 : inputField.options.length;
+            }
+        }
+        
+        function disableEdit(element) {
+            const parent = element.parentElement;
+            const displayDiv = parent.querySelector('.form-value');
+            
+            if (element.tagName === 'SELECT') {
+                const selectedOption = element.options[element.selectedIndex];
+                displayDiv.textContent = selectedOption.text;
+                element.size = 0;
+            } else {
+                displayDiv.textContent = element.value;
+            }
+            
+            element.style.display = 'none';
+            displayDiv.style.display = 'block';
+        }
+        
+        function handleKeyPress(event, element) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                disableEdit(element);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка техники</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+        <div class="navbar-container">
+            <nav class="navbar navbar-expand-lg p-0">
+                <div class="container-fluid p-0">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMain">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                            Техника
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                        <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                        <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                        <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                                    </ul>
+                            </li>
+                                    
+                            <li class="nav-item dropdown">
+                                <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                            Запчасти
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                    <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                                </ul>
+                            </li>
+                                    
+                            <li class="nav-item dropdown">
+                                <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                            Атрибуты
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                    <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container py-4">
+            <div class="header text-black">
+                <h1>Карточка техники</h1>
+            </div>
+            
+        <div class="card-body">
+            <div class="row mb-3">
+                    <div class="d-flex mb-2">
+                        <span class="detail-label"><b>Регистрационный номер:</b></span>
+                        <span>А123ВС</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <span class="detail-label"><b>Бренд:</b></span>
+                        <span>УРАЛ</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <span class="detail-label"><b>Дата покупки:</b></span>
+                        <span>2023-05-10</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <span class="detail-label"><b>Тип техники:</b></span>
+                        <span>Трактор</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <span class="detail-label"><b>Пробег:</b></span>
+                        <span>1500.0 км</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <span class="detail-label"><b>Статус эксплуатации:</b></span>
+                            <span>В работе</span>  
+                        </span>
+                    </div>
+                <div class="d-flex mb-2">
+                    <div class="d-flex">
+                        <span class="detail-label"><b>Создано:</b></span>
+                        <span>2023-05-10</span>
+                    </div>
+                </div>
+                <div class="d-flex mb-2">
+                    <div class="d-flex">
+                        <span class="detail-label"><b>Обновлено:</b></span>
+                        <span>2025-07-22</span>
+                    </div>
+                </div>
+                <div class="d-flex mb-2">
+                    <div class="d-flex">
+                        <span class="detail-label"><b>Удалено:</b></span>
+                        <span>✕</span>
+                    </div>
+                </div>
+            </div>
+                
+          
+
+            
+            <div class="card-footer bg-light">
+                <h5 class="mb-3">Фотографии</h5>
+                <div class="d-flex flex-wrap">
+                    <img src="images/vehicles/1.1.jpg" class="photo-thumbnail rounded border m-1" alt="Фото техники {{ vehicle.reg_number }}">
+                    <img src="images/vehicles/2.2.jpg" class="photo-thumbnail rounded border m-1" alt="Фото техники {{ vehicle.reg_number }}">
+                    <img src="images/vehicles/3.3.jpg" class="photo-thumbnail rounded border m-1" alt="Фото техники {{ vehicle.reg_number }}">
+                
+                </div>
+            </div>
+    <div class="container py-4">
+        <h1 class="mb-4">Запчасти</h1>
+        
+        
+       <div class="card table-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Тип</th>
+                            <th>Статус</th>
+                            <th>Дата установки</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>17</td>
+                            <td>Шина</td>
+                            <td>
+                                <span>Устанолено</span>
+                            </td>
+                            <td>2025-01-15</td>
+                            <td>
+                                <a href="spare_part_read.html" class="btn btn-sm btn-primary action-btn text-white">
+                                    Открыть
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td>Фильтр</td>
+                            <td>
+                                <span>На складе</span>
+                            </td>
+                            <td>-</td>
+                            <td>
+                                <a href="spare_part_read.html" class="btn btn-sm btn-primary action-btn text-white">
+                                    Открыть
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+        
+        <div class="d-flex justify-content-start mt-4">
+            <a href="vehicle_list_delete.html" class="btn btn-secondary back-link text-white">
+                Назад к списку техники
+            </a>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

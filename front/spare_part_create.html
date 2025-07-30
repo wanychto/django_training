@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание запчасти</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+        <div class="part-form">
+            <h1 class="part-form-title">Создание запчасти</h1>
+            
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-section">
+                    <div class="section-title">Тип запчасти</div>
+                    <select class="form-select" name="spareparttype" required>
+                        <option value="" selected disabled>Выберите тип...</option>
+                        <option value="{{ type.name }}">Трактор</option>
+                    </select>
+                </div>
+                <div class="form-section">
+                    <div class="section-title">Закрепить за техникой</div>
+                    <select class="form-select" name="vehicle">
+                        <option value="" selected disabled>Выберите технику...</option>
+                        <option value="{{ vehicle.reg_number }}">А123ВС</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">Статус</div>
+                    <select class="form-select" name="status" required>
+                        <option selected>Установлено</option>
+                        <option>На складе</option>
+                        <option>В ремонте</option>
+                        <option>Ожидает ремонт</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">Атрибуты</div>
+                    <table class="attributes-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">✔</th>
+                                <th>Название</th>
+                                <th>Значение</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input mt-2">
+                                </td>
+                                <td>Диаметр(мм)</td>
+                                <td>
+                                    <input type="text" class="form-control" 
+                                           name="attribute_{{ attribute.name }}" 
+                                           placeholder="Например: 50">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input mt-2">
+                                </td>
+                                <td>Вес(кг)</td>
+                                <td>
+                                    <input type="text" class="form-control" 
+                                           name="attribute_{{ attribute.name }}" 
+                                           placeholder="Например: 3.2">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+                <div class="form-section">
+                    <div class="section-title">Фотография</div>
+                    <div class="file-input-container">
+                        <input type="file" class="form-control" name="photo_1">
+                    </div>
+                    <div class="file-input-container">
+                        <input type="file" class="form-control" name="photo_2">
+                    </div>
+                    <div class="file-input-container">
+                        <input type="file" class="form-control" name="photo_3">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary ">Сохранить</button>
+            </form>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
