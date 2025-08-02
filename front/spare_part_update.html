@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование запчасти</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container mt-4">
+        <h1>Редактирование запчасти</h1>
+        
+        <div class="part-edit-container">
+            <form method="post" enctype="multipart/form-data" id="editForm">
+                <div class="form-group">
+                    <label class="form-label">Тип запчасти</label>
+                    <select class="form-select" name="spareparttype" required>
+                        <option selected>Фильтр масляный</option>
+                        <option>Гидронасос</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Закрепить за техникой</label>
+                    <select class="form-select" name="vehicle">
+                        <option selected>УРАЛ А123ВС</option>
+                        <option>КАМАЗ B456DE</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Статус</label>
+                    <select class="form-select" name="status">
+                        <option selected>Установлено</option>
+                        <option>На складе</option>
+                        <option>В ремонте</option>
+                        <option>Ожидает ремонт</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">Атрибуты</div>
+                    <table class="attributes-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">✔</th>
+                                <th>Название</th>
+                                <th>Значение</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input mt-2" checked>
+                                </td>
+                                <td>Диаметр(мм)</td>
+                                <td>
+                                    <input type="text" class="form-control" 
+                                           name="attribute_{{ attribute.name }}" 
+                                           placeholder="Например: 50" value="50">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input mt-2" checked>
+                                </td>
+                                <td>Вес(кг)</td>
+                                <td>
+                                    <input type="text" class="form-control" 
+                                           name="attribute_{{ attribute.name }}" 
+                                           placeholder="Например: 3.2" value="3.2">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h5 class="mt-4">Текущие фотографии</h5>
+                <div class="row mb-3">
+                    <div class="col-md-3 position-relative">
+                        <img src="images/spareparts/1.jpeg" class="img-thumbnail">
+                        <button type="button" class="btn btn-sm btn-danger delete-photo-btn position-absolute top-0 end-0"
+                                onclick="preparePhotoDelete('1.jpeg')">
+                            ×
+                        </button>        
+                    </div>
+                    <div class="col-md-3 position-relative">
+                        <img src="images/spareparts/2.jpg" class="img-thumbnail">
+                        <button type="button" class="btn btn-sm btn-danger delete-photo-btn position-absolute top-0 end-0"
+                                onclick="preparePhotoDelete('2.jpg')">
+                            ×
+                        </button>        
+                    </div>
+                    <div class="col-md-3 position-relative">
+                        <img src="images/spareparts/3.jpg" class="img-thumbnail">
+                        <button type="button" class="btn btn-sm btn-danger delete-photo-btn position-absolute top-0 end-0"
+                                onclick="preparePhotoDelete('3.jpg')">
+                            ×
+                        </button>        
+                    </div>
+                </div>
+                
+                <h3 class="section-title">Добавить фотографии</h3>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_1">
+                </div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_2">
+                </div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_3">
+                </div>
+                
+                <div class="d-flex gap-2"> 
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-danger" 
+                            data-bs-toggle="modal" data-bs-target="#deletePartModal">
+                        Удалить 
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletePhotoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Подтвердите действие</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="photoDeleteMessage">Удалить фото 1.jpeg?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="post" action="">
+                        <button type="submit" class="btn btn-dark px-4">
+                            Да
+                        </button>
+                    </form>
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        Нет
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletePartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <h5 class="mb-3">Подтвердите действие</h5>
+                    <p class="mb-4">Удалить эту запчасть?</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <form id="deleteForm" method="post" action="">
+                            <button type="submit" class="btn btn-dark px-4">
+                                Да
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentPhotoToDelete = null;
+        
+        function preparePhotoDelete(photoName, event) {
+            currentPhotoToDelete = photoName;
+            document.getElementById('photoDeleteMessage').textContent = 
+                `Удалить фото ${photoName}?`;
+            
+            const modal = new bootstrap.Modal(document.getElementById('deletePhotoModal'));
+            modal.show();
+            
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            return false;
+        }
+        
+        document.getElementById('confirmPhotoDelete').addEventListener('click', function() {
+            if (!currentPhotoToDelete) return;
+            
+            console.log(`Удаляем фото: ${currentPhotoToDelete}`);
+            
+            const photoContainers = document.querySelectorAll('.position-relative'); 
+            photoContainers.forEach(container => {
+                const img = container.querySelector('img');
+                if (img && img.src.includes(currentPhotoToDelete)) {
+                    container.style.transition = 'opacity 0.3s';
+                    container.style.opacity = '0';
+                    setTimeout(() => container.remove(), 300);
+                }
+            });
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deletePhotoModal'));
+            modal.hide();
+            
+            currentPhotoToDelete = null;
+        });
+
+        document.getElementById('confirmPartDelete').addEventListener('click', function() {
+            const deleteBtn = this;
+            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Удаление...';
+            deleteBtn.disabled = true;
+            
+            console.log('Удаляем запчасть');
+            
+            setTimeout(() => {
+                window.location.href = 'spare_part_list_delete.html';
+            }, 1500);
+        });
+    
+        document.querySelectorAll('.delete-photo-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const photoName = this.getAttribute('data-photo-name') || 
+                                 this.closest('.position-relative').querySelector('img').src.split('/').pop();
+                preparePhotoDelete(photoName, e);
+            });
+        });
+    </script>
+</body>
+</html>

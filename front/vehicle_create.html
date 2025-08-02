@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание техники</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+        <div class="form-container mt-4">
+            <h1 class="form-title">Создание техники</h1>
+                <div class="form-section">
+                    <div class="form-section-title">Регистрационный номер</div>
+                    <input type="text" class="form-control" name="reg_number" placeholder="A123BC" required>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Бренд</div>
+                    <input type="text" class="form-control" name="brand" placeholder="УРАЛ" required>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Дата покупки</div>
+                    <input type="date" class="form-control" name="date_purchase" required>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Тип техники</div>
+                    <select class="form-control" name="type" required>
+                        <option value="" selected disabled>[выберите тип...]</option>
+                        <option>Трактор</option>
+                        <option>Грузовик</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Пробег (км)</div>
+                    <input type="number" class="form-control" name="mileage" placeholder="0" min="0" required>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Статус эксплуатации</div>
+                    <select class="form-control" name="operation_status" required>
+                        <option value="WORKING" selected>В работе</option>
+                        <option value="IDLE">Простой</option>
+                        <option value="REPAIR">Ремонт</option>
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Фотография</div>
+                    <div class="file-input-wrapper">
+                        <input type="file" class="form-control" name="file" accept="image/*">
+                    </div>
+                    <div class="file-input-wrapper">
+                        <input type="file" class="form-control" name="file" accept="image/*">
+                    </div>
+                    <div class="file-input-wrapper">
+                        <input type="file" class="form-control" name="file" accept="image/*">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const fileText = this.nextElementSibling;
+                fileText.textContent = this.files.length > 0 ? this.files[0].name : 'Файл не выбран';
+            });
+        });
+    </script>
+</body>
+</html>

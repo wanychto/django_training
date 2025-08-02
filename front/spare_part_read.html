@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация о запчасти</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="vehicle_type_create.html">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_type_list_delete.html">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_create.html">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="vehicle_list_delete.html">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container mt-4">
+        <h1 class="mb-4">Информация о запчасти</h1>
+        
+        
+            <div class="info-section">
+                <div class="info-row">
+                    <div class="info-label fw-bold">Тип запчасти</div>
+                    <div class="info-value">Фильтр масляный</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Техника</div>
+                    <div class="info-value"><a href="vehicle_read.html">УРАЛ А123ВС</a></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Статус</div>
+                    <div class="info-value">Установлено</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Создано</div>
+                    <div class="info-value">2025 07 18 13:05</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Обновлено</div>
+                    <div class="info-value">2025 07 19 14:20</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Удалено</div>
+                    <div class="info-value deleted-status">✗</div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h5 class="info-section-title">Атрибуты</h5>
+                <table class="attributes-table">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Значение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Диаметр(мм)</td>
+                            <td>50</td>
+                        </tr>
+                        <tr>
+                            <td>Вес(кг)</td>
+                            <td>3.2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+           
+            <div class="info-section">
+                <h5 class="info-section-title">Фотографии</h5>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                      <img src="images/spareparts/1.jpeg" alt="Фото 1" class="img-thumbnail">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <img src="images/spareparts/2.jpg" alt="Фото 2" class="img-thumbnail">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                      <img src="images/spareparts/3.jpg" alt="Фото 3" class="img-thumbnail">
+                    </div>
+                  </div>
+            </div>
+            
+          
+            <h4 class="mt-5">Лог изменений</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>2025-07-19 14:20</strong>: Изменено значение атрибута "Вес" с 3.0 на 3.2
+                    </li>
+                    <li class="list-group-item">
+                        <strong>2025-07-18 13:05</strong>: Создана запчасть, добавлены фото
+                    </li>
+                </ul>
+            
+            
+            <div class="d-flex justify-content-start mt-4">
+                <a href="spare_part_list_delete.html" class="btn btn-secondary text-white me-2 mb-5">
+                    Назад к списку
+                </a>
+            </div>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
