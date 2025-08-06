@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+{% block headblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Карточка техники {{ vehicle.reg_number }}
+    {% endblock title %}</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vehicle/css/styles.css' %}">
+{% endblock %}
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_create'%}">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_list'%}">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_create'%}">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_list'%}">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    {% block content %}
+    {% load thumbnail %}
+    <div class="container py-4">
+        <div class="header text-black">
+            <h1>Карточка техники</h1>
+        </div>
+        
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="d-flex mb-2">
+                    <span class="detail-label"><b>Регистрационный номер:</b></span>
+                    <span>{{ vehicle.reg_number }}</span>
+                </div>
+                <div class="d-flex mb-2">
+                    <span class="detail-label"><b>Бренд:</b></span>
+                    <span>{{ vehicle.brand }}</span>
+                </div>
+                <div class="d-flex mb-2">
+                    <span class="detail-label"><b>Дата покупки:</b></span>
+                    <span>{{ vehicle.date_purchase|date:"Y-m-d" }}</span>
+                </div>
+                <div class="d-flex mb-2">
+                    <span class="detail-label"><b>Тип техники:</b></span>
+                    <span>{{ vehicle.type.name }}</span>
+                </div>
+                <div class="d-flex mb-2">
+                    <span class="detail-label"><b>Пробег:</b></span>
+                    <span>{{ vehicle.mileage }} км</span>
+                </div>
+                <div class="d-flex mb-2">
+                    <span class="detail-label"><b>Статус эксплуатации:</b></span>
+                    <span>{{ vehicle.get_operation_status_display }}</span>
+                </div>
+                <div class="d-flex mb-2">
+                    <div class="d-flex">
+                        <span class="detail-label"><b>Создано:</b></span>
+                        <span>{{ vehicle.created_at|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+                <div class="d-flex mb-2">
+                    <div class="d-flex">
+                        <span class="detail-label"><b>Обновлено:</b></span>
+                        <span>{{ vehicle.updated_at|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+                <div class="d-flex mb-2">
+                    <div class="d-flex">
+                        <span class="detail-label"><b>Удалено:</b></span>
+                        <span>{% if vehicle.is_deleted %}✔{% else %}✕{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: table; width: 100%;">
+                <h4 class="mb-3">Фотографии</h4>
+                <div class="photos-scroll-container d-flex flex-nowrap overflow-auto pb-2" style="gap: 15px;">
+                    {% for image in images %}
+                    {% if not image.is_deleted %}
+                    <div class="photo-item flex-shrink-0" style="width: 200px; position: relative;">
+                        <div class="position-relative">
+                            {% thumbnail image.file "300x300" crop="center" as thumb %}
+                            <div class="position-relative">
+                                <img src="{{ thumb.url }}"
+                                    class="img-fluid rounded border"
+                                    alt="Фото {{ vehicle.reg_number }}"
+                                    style="height: 150px; width: 100%; object-fit: cover;"
+                                    onerror="this.style.display='none'">
+                                {% endthumbnail %}
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                {% else %}
+                    <div class="alert alert-warning">Нет доступных фотографий</div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="container py-4">
+            <h1 class="mb-4">Запчасти</h1>
+            
+            <div class="card table-card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Тип</th>
+                                    <th>Статус</th>
+                                    <th>Дата установки</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% comment %} {% for part in spare_parts %}
+                                <tr>
+                                    <td>{{ part.id }}</td>
+                                    <td>{{ part.type.name }}</td>
+                                    <td>
+                                        <span>{{ part.get_status_display }}</span>
+                                    </td>
+                                    <td>
+                                        {% if part.installation_date %}
+                                            {{ part.installation_date|date:"Y-m-d" }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'spare_part_read' part.id %}" 
+                                        class="btn btn-sm btn-primary action-btn text-white">
+                                            Открыть
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %} {% endcomment %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Нет запчастей для этой техники</td>
+                                </tr>
+                                {% comment %} {% endfor %} {% endcomment %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-start mt-4">
+                <a href="{% url 'vehicle:vehicles_list' %}" class="btn btn-secondary back-link text-white">
+                    Назад к списку техники
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% endblock %}
+</body>
+</html>
