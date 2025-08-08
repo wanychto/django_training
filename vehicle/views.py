@@ -32,7 +32,7 @@ class VehicleTypeUpdateView(UpdateView):
     model = VehicleType
     form_class = VehicleTypeForm
     template_name = 'vehicle/vehicletype_form.html'
-    success_url = 'vehicle:vehicletype_list'
+    success_url = reverse_lazy('vehicle:vehicletype_list')
     slug_field = 'name'
     slug_url_kwarg = 'name'
     def get_object(self, queryset=None):
@@ -47,7 +47,7 @@ class VehicleTypeListView(ListView):
     paginate_by = 10 
 
     def get_queryset(self):
-        return VehicleType.objects.filter(is_deleted=False)
+        return VehicleType.objects.filter(is_deleted=False).order_by('name')
     
      
 class VehicleTypeDeleteView(DeleteView):
