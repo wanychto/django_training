@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {%block headblock%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}
+        {% if object.pk %}
+            Редактирование техники
+        {%else%}
+            Создание техники
+        {%endif%}
+    {% endblock title %}</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vehicle/css/styles.css' %}">
+    {% endblock headblock%}
+</head>
+<body>
+    <div class="navbar-container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <div class="container-fluid p-0">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Техника
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_create'%}">Создать тип</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_list'%}">Список типов</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_create'%}">Создать технику</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_list'%}">Список техники</a></li>
+                                </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Запчасти
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
+                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
+                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
+                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
+                            </ul>
+                        </li>
+                                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Атрибуты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
+                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    {% block content %}
+    {% load thumbnail %}
+    <div class="container-fluid mt-4">
+        {% if object.pk %}
+        <h1>Редактирование техники</h1>
+        
+        <form method="post" enctype="multipart/form-data" class="full-width-form">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="reg_number" class="form-label">Регистрационный номер</label>
+                    <input type="text" class="form-control" id="reg_number" name="reg_number" value="{{ form.reg_number.value|default_if_none:'' }}">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="brand" class="form-label">Бренд</label>
+                    <input type="text" class="form-control" id="brand" name="brand" value="{{ form.brand.value|default_if_none:'' }}">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="date_purchase" class="form-label">Дата покупки</label>
+                    <input type="date" class="form-control" id="date_purchase" name="date_purchase" value="{{ form.date_purchase.value|date:'Y-m-d'|default_if_none:'' }}">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="type" class="form-label">Тип техники</label>
+                    <select class="form-select" id="type" name="type">
+                        {% for choice in form.type.field.choices %}
+                            <option value="{{ choice.0 }}" {% if form.type.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="mileage" class="form-label">Пробег</label>
+                    <input type="text" class="form-control" id="mileage" name="mileage" value="{{ form.mileage.value|default_if_none:'' }}">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="operation_status" class="form-label">Статус эксплуатации</label>
+                    <select class="form-select" id="operation_status" name="operation_status">
+                        {% for choice in form.operation_status.field.choices %}
+                            <option value="{{ choice.0 }}" {% if form.operation_status.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <h5 class="mt-4">Текущие фотографии</h5>
+            {% if images %}
+                <div class="row g-2">
+                    {% for image in images %}
+                    {% if not image.is_deleted %}
+                    <div class="col-md-4 mb-3 ">
+                        <div class="d-flex">  
+                            {% thumbnail image.file "300x300" crop="center" as thumb %}
+                            <div style="height: 200px; overflow: hidden;" class="rounded border">
+                                <img src="{{ thumb.url }}"
+                                     class="img-fluid w-100 h-100"
+                                     alt="Фото {{ vehicle.reg_number }}"
+                                     style="object-fit: cover;"
+                                     onerror="this.style.display='none'">
+                            </div>
+                            {% endthumbnail %}
+                            <button type="button" 
+                                    class="btn btn-danger btn-sm"
+                                    style="
+                                    top: 5px;
+                                    right: 5px;
+                                    width: 24px;
+                                    height: 24px;
+                                    border-radius: 50%;
+                                    font-size: 12px;
+                                "
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deletePhotoModal"
+                                    onclick="setPhotoId('{{ image.id }}')">
+                                X
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %} 
+                </div>
+                {% else %}
+                    <div class="alert alert-warning">Нет доступных фотографий</div>
+                {% endif %}
+            
+            <div class="mt-4">
+                <h4>Добавить новые фото</h4>
+                <div class="photo-upload">
+                    <input type="file" class="form-control" name="photo_1" id="photo_1">
+                </div>
+                <div class="photo-upload">
+                    <input type="file" class="form-control" name="photo_2" id="photo_2">
+                </div>
+                <div class="photo-upload">
+                    <input type="file" class="form-control" name="photo_3" id="photo_3">
+                </div>
+            </div>
+        <button type="submit" class="btn btn-primary mt-3 mb-5">Сохранить изменения</button>
+        </form>
+    </div>
+    <div class="modal fade" id="deletePhotoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centred">
+            <div class="modal-content">
+                    <div class="modal-body text-center p-4">
+                        <form method="post" action="{% url 'vehicle:vehicles_update' pk=vehicle.pk %}" id="deleteForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_photo" value="1">
+                        <input type="hidden" name="photo_id" id="photoIdField">
+                        <h5 class="mb-3">Подтвердите действие</h5>
+                        <p class="mb-4">
+                            Вы уверены, что хотите удалить это фото?
+                        
+                        <div class="d-flex justify-content-center gap-3">
+                                <button type="submit" class="btn btn-dark px-4" form="deleteForm">Да</button>
+                                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Нет</button>
+                        
+                        </div>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        {% else %}
+        <div class="form-container mt-4">
+            <h1 class="form-title">Создание техники</h1>
+            <form method="post" action="" enctype="multipart/form-data" id="vehicleForm">
+                {% csrf_token %}
+                {{ form.vehicletypes_id }}
+                <div class="form-group">
+                    <label>{{ form.type_display.label }}</label>
+                    {{ form.type_display }}
+                    <datalist id="vehicle-types">
+                      {% for vid, name in form.fields.vehicletypes_id.choices %}
+                        <option value="{{ name }}">
+                      {% endfor %}
+                    </datalist>
+                  </div>
+                
+                <div class="form-section">
+                    <div class="form-section-title">Регистрационный номер</div>
+                    <input type="text" class="form-control" name="reg_number" 
+                           
+                           placeholder="A123BC" required>
+                    
+                </div>
+                
+                
+                <div class="form-section">
+                    <div class="form-section-title">Бренд</div>
+                    <input type="text" class="form-control" name="brand" 
+                           value="{{ form.brand.value|default_if_none:'' }}" 
+                           placeholder="УРАЛ" required>
+                    {% if form.brand.errors %}
+                        <div class="text-danger">{{ form.brand.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                
+                <div class="form-section">
+                    <div class="form-section-title">Дата покупки</div>
+                    <input type="date" class="form-control" name="date_purchase" 
+                           value="{{ form.date_purchase.value|date:'Y-m-d'|default_if_none:'' }}" required>
+                    {% if form.date_purchase.errors %}
+                        <div class="text-danger">{{ form.date_purchase.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                
+                <div class="form-section">
+                    <div class="form-section-title">Тип техники</div>  
+                    <select class="form-control" name="{{ form.type.name }}" id="{{ form.type.id_for_label }}" required>
+                        {% for choice in form.type.field.choices %}
+                            <option value="{{ choice.0 }}" {% if form.type.value == choice.0 %}selected{% endif %}>
+                                {{ choice.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {% if form.type.errors %}
+                        <div class="alert alert-danger mt-2">
+                            {% for error in form.type.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                
+                <div class="form-section">
+                    <div class="form-section-title">Пробег (км)</div>
+                    <input type="number" class="form-control" name="mileage" 
+                           value="{{ form.mileage.value|default_if_none:'0' }}" 
+                           placeholder="0" min="0" required>
+                    {% if form.mileage.errors %}
+                        <div class="text-danger">{{ form.mileage.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                
+                <div class="form-section">
+                    <div class="form-section-title">Статус эксплуатации</div>
+                    <select class="form-control" name="operation_status" required>
+                        <option value="WORK" {% if form.operation_status.value == 'WORK' %}selected{% endif %}>В работе</option>
+                        <option value="OUTAGE" {% if form.operation_status.value == 'OUTAGE' %}selected{% endif %}>Простой</option>
+                        <option value="REPAIR" {% if form.operation_status.value == 'REPAIR' %}selected{% endif %}>Ремонт</option>
+                    </select>
+                </div>
+                
+                
+                <div class="form-group">
+                    <label>Фотографии</label>
+                    <div class="image-upload-fields">
+                        <input type="file" name="image1" accept="image/*" class="form-control mb-2">
+                        <input type="file" name="image2" accept="image/*" class="form-control mb-2">
+                        <input type="file" name="image3" accept="image/*" class="form-control">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+        {% endif %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script>        
+        function setPhotoId(photoId) {
+            document.getElementById('photoIdField').value = photoId;
+        }
+        
+        document.getElementById('deleteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            }).then(response => {
+                if(response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Ошибка при удалении');
+                }
+            });
+        });
+        
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработка выбора типа техники
+            const typeDisplay = document.getElementById('type_display');
+            const virtualIdField = document.getElementById('id_vehicletypes_id');
+            const datalist = document.getElementById('vehicle-types');
+            
+            if (typeDisplay && virtualIdField && datalist) {
+                typeDisplay.addEventListener('input', function() {
+                    const selectedOption = Array.from(datalist.options).find(
+                        opt => opt.value === this.value
+                    );
+                    
+                    if (selectedOption) {
+                        virtualIdField.value = selectedOption.dataset.id;
+                    } else {
+                        // Генерация ID для нового типа (если разрешено создание новых)
+                        const name = this.value.trim();
+                        if (name) {
+                            const hash = String(Math.abs(name.hashCode()));
+                            virtualIdField.value = hash.slice(0, 8);
+                        }
+                    }
+                });
+            }
+            
+            // Полифил для хеширования строки
+            if (!String.prototype.hashCode) {
+                String.prototype.hashCode = function() {
+                    let hash = 0;
+                    for (let i = 0; i < this.length; i++) {
+                        hash = ((hash << 5) - hash) + this.charCodeAt(i);
+                        hash |= 0;
+                    }
+                    return hash;
+                };
+            }
+        });
+
+    </script>
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
