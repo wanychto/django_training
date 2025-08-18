@@ -1,0 +1,60 @@
+{%extends 'vehicle/base.html'%}
+{% block title %}
+    {% if object.pk %}
+        Редактирование типа запчасти
+    {% else %}
+        Создание типа запчасти
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if object.pk %}
+    <div class="part-type-form">
+        <h1 class="part-form-title">Редактирование типа запчасти</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <div class="info-label">Название типа запчасти</div>
+                <input type="text" class="form-control" name="name" value="{{form.name.value}}" required>
+            </div>
+            
+            <div class="mb-4">
+                <div class="form-label">Дата создания</div>
+                <div class="read-only-field">{{ form.instance.created_at }}</div>
+            </div>
+            <div class="mb-4">
+                <div class="form-label">Дата обновления</div>
+                <div class="read-only-field">{{ form.instance.updated_at }}</div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">Удалено</label>
+                <div class="read-only-field deleted-status">{% if form.instance.is_deleted == False %}
+                    X
+                {% else %}
+                    ✓
+                {%endif%}</div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary ">Сохранить</button>
+        </form>
+    </div>
+{% else %}
+    <div class="container-fluid mt-5 px-0">
+        <div class="part-type-form">
+            <h1 class="part-form-title">Создание типа запчасти</h1>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Название типа запчасти</label>
+                    <input type="text" class="form-control" id="name" name="name" 
+                        placeholder="Например: Фильтр" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

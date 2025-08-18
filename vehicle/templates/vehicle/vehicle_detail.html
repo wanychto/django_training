@@ -1,63 +1,5 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-{% block headblock %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Карточка техники {{ vehicle.reg_number }}
-    {% endblock title %}</title>
-    {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'vehicle/css/styles.css' %}">
-{% endblock %}
-</head>
-<body>
-    <div class="navbar-container">
-        <nav class="navbar navbar-expand-lg p-0">
-            <div class="container-fluid p-0">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarMain">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        Техника
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_create'%}">Создать тип</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_list'%}">Список типов</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_create'%}">Создать технику</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_list'%}">Список техники</a></li>
-                                </ul>
-                        </li>
-                                
-                        <li class="nav-item dropdown">
-                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        Запчасти
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
-                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
-                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
-                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
-                            </ul>
-                        </li>
-                                
-                        <li class="nav-item dropdown">
-                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        Атрибуты
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
-                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
+{% extends 'vehicle/base.html'%}
+    {% block title %}Карточка техники {{ vehicle.reg_number }} {% endblock title %} 
     {% block content %}
     {% load thumbnail %}
     <div class="container py-4">
@@ -114,8 +56,8 @@
             <div style="display: table; width: 100%;">
                 <h4 class="mb-3">Фотографии</h4>
                 <div class="photos-scroll-container d-flex flex-nowrap overflow-auto pb-2" style="gap: 15px;">
+                    {% if images %}
                     {% for image in images %}
-                    {% if not image.is_deleted %}
                     <div class="photo-item flex-shrink-0" style="width: 200px; position: relative;">
                         <div class="position-relative">
                             {% thumbnail image.file "300x300" crop="center" as thumb %}
@@ -130,10 +72,10 @@
                         </div>
                     </div> 
                 </div>
+                {% endfor %}
                 {% else %}
                     <div class="alert alert-warning">Нет доступных фотографий</div>
-                {% endif %}
-                {% endfor %}
+                {% endif %} 
             </div>
         </div>
 
@@ -154,32 +96,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% comment %} {% for part in spare_parts %}
+                                {% for part in spare_parts %}
                                 <tr>
                                     <td>{{ part.id }}</td>
-                                    <td>{{ part.type.name }}</td>
+                                    <td><a href="{% url 'spare_parts:sparepart_detail' part.id %}" >{{ part.spareparttype.name }}</a></td>
                                     <td>
-                                        <span>{{ part.get_status_display }}</span>
+                                        <span>{{ part.operation_status }}</span>
                                     </td>
                                     <td>
-                                        {% if part.installation_date %}
-                                            {{ part.installation_date|date:"Y-m-d" }}
+                                        {% if part.created_at %}
+                                            {{ part.created_at|date:"Y-m-d" }}
                                         {% else %}
                                             -
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <a href="{% url 'spare_part_read' part.id %}" 
+                                        <a href="{% url 'spare_parts:sparepart_detail' part.id %}" 
                                         class="btn btn-sm btn-primary action-btn text-white">
                                             Открыть
                                         </a>
                                     </td>
                                 </tr>
-                                {% empty %} {% endcomment %}
+                                {% empty %} 
                                 <tr>
                                     <td colspan="5" class="text-center">Нет запчастей для этой техники</td>
                                 </tr>
-                                {% comment %} {% endfor %} {% endcomment %}
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -194,8 +136,3 @@
         </div>
     </div>
     {% endblock %}
-    {% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {% endblock %}
-</body>
-</html>
