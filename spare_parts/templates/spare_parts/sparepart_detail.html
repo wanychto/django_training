@@ -1,0 +1,104 @@
+{% extends 'vehicle/base.html'%}
+    {% block title %}Карточка запчасти {{ vehicle.reg_number }} {% endblock title %} 
+    {% block content %}
+    {% load thumbnail %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Информация о запчасти</h1>
+
+            <div class="info-section">
+                <div class="info-row">
+                    <div class="info-label fw-bold">Тип запчасти</div>
+                    <div class="info-value">{{spare_part.spareparttype}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Техника</div>
+                    <div class="info-value">
+                        {% if spare_part.vehicle %}
+                        <a href="{% url 'vehicle:vehicles_detail' pk=spare_part.vehicle.id%}">
+                            {{spare_part.vehicle}}</a>
+                        {% else %}
+                        Не привязано к технике
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Статус</div>
+                    <div class="info-value">{% if spare_part.operation_status == "1" %}Установлено
+                        {% elif spare_part.operation_status == "2" %}На складе
+                        {% elif spare_part.operation_status == "3" %}В ремонте
+                        {% elif spare_part.operation_status == "4" %}Ожидает ремонт
+                        {% else %}Неизвестно{% endif %}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Создано</div>
+                    <div class="info-value">{{spare_part.created_at}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Обновлено</div>
+                    <div class="info-value">{{spare_part.updated_at}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label fw-bold">Удалено</div>
+                    <div class="info-value deleted-status">{% if spare_part.is_deleted %}✔{% else %}✕{% endif %}</div>
+                </div>
+            </div>
+            
+            <div class="info-section">
+                <h5 class="info-section-title">Атрибуты</h5>
+                <table class="attributes-table">
+                    {% for attr_value in attribute_values %}
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Значение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{attr_value.attribute.name}}({{attr_value.attribute.unit}})</td>
+                            <td>{{attr_value.value}}</td>
+                        </tr>
+                        {% empty %} 
+                        <div class="alert alert-warning">Нет привязанных атрибутов</div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="info-section">
+                <h5 class="info-section-title">Фотографии</h5>
+                {% if images %}
+                <div class="row">
+                    {% for image in images %}
+                    <div class="col-md-3 mb-3">
+                    {% thumbnail image.file "300x300" crop="center" as thumb %}
+                        <img src="{{thumb.url}}" alt="Фото {{sparepart.number}}" class="img-thumbnail">
+                    </div>
+                    {% endthumbnail %}
+                    {%endfor%}
+                </div>
+                {% else %}
+                    <div class="alert alert-warning">Нет доступных фотографий</div>
+                {%endif%}
+            </div>
+            
+          
+            <h4 class="mt-5">Лог изменений</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>2025-07-19 14:20</strong>: Изменено значение атрибута "Вес" с 3.0 на 3.2
+                    </li>
+                    <li class="list-group-item">
+                        <strong>2025-07-18 13:05</strong>: Создана запчасть, добавлены фото
+                    </li>
+                </ul>
+            
+            
+            <div class="d-flex justify-content-start mt-4">
+                <a href="{% url 'spare_parts:sparepart_list'%}" class="btn btn-secondary text-white me-2 mb-5">
+                    Назад к списку
+                </a>
+            </div>
+        
+    </div>
+{% endblock %}

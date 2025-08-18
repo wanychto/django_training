@@ -1,0 +1,342 @@
+{%extends 'vehicle/base.html'%}
+{% block title %}
+    {% if object.pk %}
+        Редактирование запчасти
+    {% else %}
+        Создание запчасти
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% load thumbnail %}
+    {% if object.pk %}
+    <div class="container mt-4">
+        <h1>Редактирование запчасти</h1>
+        
+        <div class="part-edit-container">
+            <form method="post" enctype="multipart/form-data" id="editForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label" for="{{form.spareparttype.id_for_label}}">Тип запчасти</label>
+                        {{form.spareparttype}}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="{{form.vehicle.id_for_label}}">Закрепить за техникой</label>
+                        {{form.vehicle}}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Статус</label>
+                    <select class="form-select" name="operation_status">
+                        {% for value, label in form.operation_status.field.choices %}
+                            <option value="{{ value }}" 
+                                {% if form.operation_status.value == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">Атрибуты</div>
+                    <table class="attributes-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">✔</th>
+                                <th>Название</th>
+                                <th>Значение</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for attr_id, attr in attribute_data.items %}
+                                <td>
+                                <input type="checkbox"
+                                    name="attr_chk_{{ attr.id }}"
+                                    id="attr_chk_{{ attr.id }}"
+                                    {% if attr.exists %}checked{% endif %}>
+                                </td>
+                                    <td>{{ attr.name }}({{attr.unit}})</td>
+                                <td>
+                                    <input type="text" class="form-control" 
+                                    name="attr_val_{{ attr.id }}"
+                                    value="{{ attr.value|default_if_none:'' }}"
+                                    placeholder="Например: 50" >
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h5 class="mt-4">Текущие фотографии</h5>
+                {% if images %}
+                <div class="row mb-3">
+                    {% for image in images %}
+                    <div class="col-md-3 position-relative">
+                        {% thumbnail image.file "300x300" crop="center" as thumb %}
+                        <img src="{{thumb.url}}" class="img-thumbnail">
+                        <button type="button" 
+                                class="btn btn-sm btn-danger delete-photo-btn position-absolute top-0 end-0"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deletePhotoModal"
+                                data-photo-id="{{ image.id }}">
+                            ×
+                        </button>
+                        {% endthumbnail %}        
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <h3 class="section-title">Добавить фотографии</h3>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_1">
+                </div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_2">
+                </div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_3">
+                </div>
+                
+                <div class="d-flex gap-2"> 
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn btn-danger" 
+                            data-bs-toggle="modal" data-bs-target="#deletePartModal">
+                        Удалить 
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="deletePartModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <h5 class="mb-3">Подтвердите действие</h5>
+                    <p class="mb-4">Удалить эту запчасть?</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <form id="deleteForm" method="post" action="{% url 'spare_parts:sparepart_delete' object.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark px-4">
+                                Да
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletePhotoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <h5 class="mb-3">Подтвердите действие</h5>
+                    <p class="mb-4">Удалить это фото?</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <form id="deletePhotoForm" method="post" action="">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark px-4">
+                                Да
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            Нет
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="part-form">
+        <h1 class="part-form-title">Создание запчасти</h1>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-section">
+                <div class="section-title">Тип запчасти</div>
+                {{ form.spareparttype }}
+            </div>
+            <div class="form-section">
+                <div class="section-title">Закрепить за техникой</div>
+                    {{form.vehicle}}
+            </div>
+            
+            <div class="form-section">
+                <div class="section-title">Статус</div>
+                <select class="form-select" name="operation_status" required>
+                    {% for value, label in form.operation_status.field.choices %}
+                        <option value="{{ value }}" 
+                            {% if form.operation_status.value == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-section">
+                <div class="section-title">Атрибуты</div>
+                <table class="attributes-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">✔</th>
+                            <th>Название</th>
+                            <th>Значение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attribute in attributes %}
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input mt-2" name="attribute_{{ attribute.id }}_enabled">
+                            </td>
+                            <td>{{attribute.name}}({{attribute.unit}})</td>
+                            <td>
+                                <input type="text" class="form-control" 
+                                       name="attribute_{{ attribute.id }}" 
+                                       placeholder="Введите значение"
+                                       value="{{ attribute_values.attribute.id|default_if_none:'' }}"
+                                       {% if attribute.data_type == 'integer' %}pattern="\d*"{% endif %}>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">Нет доступных атрибутов</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div class="form-section">
+                <div class="section-title">Фотография</div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_1">
+                </div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_2">
+                </div>
+                <div class="file-input-container">
+                    <input type="file" class="form-control" name="photo_3">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary ">Сохранить</button>
+        </form>
+    </div>
+    {% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-photo-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const photoId = this.getAttribute('data-photo-id');
+                const deleteForm = document.getElementById('deletePhotoForm');
+                
+                const submitButton = deleteForm.querySelector('button[type="submit"]');
+                
+                const hiddenFields = deleteForm.querySelectorAll('input[type="hidden"]');
+                hiddenFields.forEach(field => {
+                    if (field.name !== 'csrfmiddlewaretoken') {
+                        field.remove();
+                    }
+                });
+                
+                const photoIdInput = document.createElement('input');
+                photoIdInput.type = 'hidden';
+                photoIdInput.name = 'photo_id';
+                photoIdInput.value = photoId;
+                deleteForm.insertBefore(photoIdInput, submitButton);
+                
+                const deleteFlag = document.createElement('input');
+                deleteFlag.type = 'hidden';
+                deleteFlag.name = 'delete_photo';
+                deleteFlag.value = 'true';
+                deleteForm.insertBefore(deleteFlag, submitButton);
+            });
+        });
+
+        const deletePhotoForm = document.getElementById('deletePhotoForm');
+        if (deletePhotoForm) {
+            deletePhotoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const photoId = formData.get('photo_id');
+                const photoElement = document.querySelector(`.delete-photo-btn[data-photo-id="${photoId}"]`)?.closest('.col-md-3');
+                
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        if (photoElement) {
+                            photoElement.style.transition = 'opacity 0.3s';
+                            photoElement.style.opacity = '0';
+                            setTimeout(() => {
+                                photoElement.remove();
+                                bootstrap.Modal.getInstance(document.getElementById('deletePhotoModal')).hide();
+                            }, 300);
+                        } else {
+                            window.location.reload();
+                        }
+                    } else {
+                        throw new Error('Ошибка сервера');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка при удалении фото');
+                });
+            });
+        }
+
+        document.querySelectorAll('input[type="checkbox"][name^="attr_chk_"]').forEach(checkbox => {
+    const attrId = checkbox.name.split('_')[2];
+    const inputField = document.querySelector(`input[name="attr_val_${attrId}"]`);
+    
+    inputField.disabled = !checkbox.checked;
+    
+    checkbox.addEventListener('change', function() {
+        inputField.disabled = !this.checked;
+        if (!this.checked) {
+            inputField.value = '';
+        }
+    });
+});
+
+        const deleteForm = document.getElementById('deleteForm');
+        if (deleteForm) {
+            deleteForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'X-CSRFToken': this.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "{% url 'spare_parts:sparepart_list' %}";
+                    } else {
+                        alert('Ошибка при удалении запчасти');
+                    }
+                })
+                .catch(error => console.error('Ошибка:', error));
+            });
+        }
+    });
+</script>
+{% endblock %}
