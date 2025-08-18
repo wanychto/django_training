@@ -1,63 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title%}Типы техники{% endblock title%}</title>
-    {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'vehicle/css/styles.css'%}">
-    {% endblock %}
-</head>
-<body>
-    <div class="navbar-container">
-        <nav class="navbar navbar-expand-lg p-0">
-            <div class="container-fluid p-0">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarMain">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        Техника
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_create'%}">Создать тип</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicletype_list'%}">Список типов</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_create'%}">Создать технику</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'vehicle:vehicles_list'%}">Список техники</a></li>
-                                </ul>
-                        </li>
-                                
-                        <li class="nav-item dropdown">
-                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        Запчасти
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="spare_part_type_create.html">Создать тип</a></li>
-                                <li><a class="dropdown-item" href="spare_part_type_list_delete.html">Список типов</a></li>
-                                <li><a class="dropdown-item" href="spare_part_create.html">Создать запчасть</a></li>
-                                <li><a class="dropdown-item" href="spare_part_list_delete.html">Список запчастей</a></li>
-                            </ul>
-                        </li>
-                                
-                        <li class="nav-item dropdown">
-                            <a class="nav-link nav-button dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                        Атрибуты
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="attribute_create.html">Создать атрибут</a></li>
-                                <li><a class="dropdown-item" href="attribute_list_delete.html">Список атрибутов</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-    {% block content %}
+{% extends 'vehicle/base.html'%}
+{% block title%}Типы техники{% endblock title%}</title>
+{% block content %}
     <div class="container-fluid mt-5 px-0">
         <h1 class="page-title">Типы техники</h1>
         <div class="table-container">
@@ -148,7 +91,6 @@
         {% endif %}
         </div>
     </div>
-    {% endblock %}
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -171,8 +113,8 @@
             </div>
         </div>
     </div>
-    {% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+{% block scripts %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Обработка открытия модального окна
@@ -233,7 +175,5 @@
                 });
             });
         });
-    {% endblock %}
     </script>
-</body>
-</html>
+{% endblock %}

@@ -4,7 +4,7 @@ from .models import Vehicle, VehicleType
 class VehicleTypeForm(forms.ModelForm):
     class Meta:
         model = VehicleType  
-        fields = '__all__' 
+        fields = ['name']
 
 class VehicleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
