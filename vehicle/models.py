@@ -6,8 +6,8 @@ from django.urls import reverse
 
 class VehicleType(models.Model):
     name = models.CharField(max_length=128, unique=True)
-    created_at=models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at=models.DateTimeField(auto_now=True, editable=False)
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
     is_deleted=models.BooleanField(default=False)
     def __str__(self):
         return self.name
