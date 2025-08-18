@@ -144,7 +144,6 @@ class VehicleUpdateView(UpdateView):
                 messages.error(request, f'Ошибка удаления: {str(e)}')
                 return redirect('vehicle:vehicles_update', pk=self.object.pk)
         
-    # Обработка сохранения формы
         return super().post(request, *args, **kwargs)
     
 class VehicleDeleteView(DeleteView):
@@ -165,7 +164,7 @@ class VehicleDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['spare_parts'] = self.object.spare_parts.all()
+        context['spare_parts'] = self.object.spare_parts.all()
         context['images'] = self.object.images.filter(is_deleted=False)
         return context
     
